@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: 247 247 245;
+    --fg: 20 33 61;
+    --muted: 132 146 184;
+    --border: 226 225 220;
+    --surface: 255 255 255;
+  }
+
+  .dark {
+    --bg: 15 20 32;
+    --fg: 236 238 245;
+    --muted: 132 146 184;
+    --border: 35 42 59;
+    --surface: 22 28 43;
+  }
+
+  * {
+    @apply border-line dark:border-line-dark;
+  }
+
+  body {
+    @apply bg-paper text-ink dark:bg-paper-dark dark:text-white antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  :focus-visible {
+    outline: 2px solid theme("colors.gold.DEFAULT");
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .seal {
+    @apply relative inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-gold text-gold;
+  }
+  .seal::before {
+    content: "";
+    @apply absolute inset-[3px] rounded-full border border-gold/40;
+  }
+}
