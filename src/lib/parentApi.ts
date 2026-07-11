@@ -39,8 +39,30 @@ export interface BackendMedicalRecord {
   allergies: string | null;
 }
 
+export interface BackendGrade {
+  id: string;
+  examName: string;
+  date: string;
+  score: number;
+  maxScore: number;
+}
+
+export interface BackendAlert {
+  id: string;
+  childName: string;
+  type: "student" | "health";
+  reason: string | null;
+  location: string | null;
+  time: string;
+  status: "active" | "responding" | "resolved";
+}
+
 export const parentApi = {
   listChildren: (token: string) => apiClient.get<BackendChild[]>("/parent/children", token),
+
+  getGrades: (token: string, studentId: string) => apiClient.get<BackendGrade[]>(`/parent/children/${studentId}/grades`, token),
+
+  listAlerts: (token: string) => apiClient.get<BackendAlert[]>("/parent/alerts", token),
 
   getAttendance: (token: string, studentId: string) =>
     apiClient.get<BackendAttendanceRecord[]>(`/parent/children/${studentId}/attendance`, token),

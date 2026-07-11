@@ -1,6 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Role } from "@/config/navigation";
 import type { AuthRole } from "@/config/authRoles";
+import type { BackendUser } from "@/lib/authApi";
 
 export type Language = "en" | "fr";
 export type AuthMode = "login" | "register" | "guest";
@@ -20,7 +21,7 @@ interface AuthState {
   loginMethod: "phone" | "id" | "otp" | "credentials" | null;
   accessToken: string | null;
   refreshToken: string | null;
-  backendUser: Record<string, unknown> | null;
+  backendUser: BackendUser | null;
   pendingUserId: string | null;
   authError: string | null;
 }
@@ -90,7 +91,7 @@ const authSlice = createSlice({
       state.refreshToken = action.payload.refreshToken;
       state.isAuthenticated = true;
     },
-    setBackendUser(state, action: PayloadAction<Record<string, unknown>>) {
+    setBackendUser(state, action: PayloadAction<BackendUser>) {
       state.backendUser = action.payload;
     },
     setPendingUserId(state, action: PayloadAction<string>) {

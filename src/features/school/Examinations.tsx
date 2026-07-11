@@ -25,7 +25,6 @@ export function Examinations() {
   const [name, setName] = useState("");
   const [className, setClassName] = useState("");
   const [date, setDate] = useState("");
-  const [scores, setScores] = useState<Record<string, string>>({});
 
   const { data: exams, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["school-exams"],

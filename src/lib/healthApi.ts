@@ -32,9 +32,20 @@ export interface BackendHealthSos {
   student: { fullName: string; school: { name: string } | null };
 }
 
+export interface BackendHealthReport {
+  id: string;
+  title: string;
+  school: string;
+  generatedOn: string;
+  metric: string;
+}
+
 export const healthApi = {
   records: {
     list: (token: string) => apiClient.get<BackendMedicalRecord[]>("/health/records", token),
+  },
+  reports: {
+    list: (token: string) => apiClient.get<BackendHealthReport[]>("/health/reports", token),
   },
   vaccinations: {
     list: (token: string) => apiClient.get<BackendVaccinationCampaign[]>("/health/vaccinations", token),

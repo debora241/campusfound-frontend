@@ -3,6 +3,17 @@ import { Toaster } from "sonner";
 import { AppShell } from "@/layouts/AppShell";
 import { AccountShell } from "@/layouts/AccountShell";
 import { StudentDashboard } from "@/features/student/dashboard/StudentDashboard";
+import { Courses } from "@/features/student/Courses";
+import { Assignments as StudentAssignments } from "@/features/student/Assignments";
+import { Grades as StudentGrades } from "@/features/student/Grades";
+import { CareerGuidance } from "@/features/student/CareerGuidance";
+import { Library as StudentLibrary } from "@/features/student/Library";
+import { SkillPassport } from "@/features/student/SkillPassport";
+import { Portfolio } from "@/features/student/Portfolio";
+import { Community } from "@/features/student/Community";
+import { Wallet } from "@/features/student/Wallet";
+import { Messages as StudentMessages } from "@/features/student/Messages";
+import { Calendar as StudentCalendar } from "@/features/student/Calendar";
 
 import { SplashScreen } from "@/features/auth/SplashScreen";
 import { Onboarding } from "@/features/auth/Onboarding";
@@ -160,6 +171,17 @@ export default function App() {
 
         <Route path="/student" element={<AppShell role="student" />}>
           <Route index element={<StudentDashboard />} />
+          <Route path="courses" element={<Courses />} />
+          <Route path="assignments" element={<StudentAssignments />} />
+          <Route path="grades" element={<StudentGrades />} />
+          <Route path="career-guidance" element={<CareerGuidance />} />
+          <Route path="library" element={<StudentLibrary />} />
+          <Route path="skill-passport" element={<SkillPassport />} />
+          <Route path="portfolio" element={<Portfolio />} />
+          <Route path="community" element={<Community />} />
+          <Route path="wallet" element={<Wallet />} />
+          <Route path="messages" element={<StudentMessages />} />
+          <Route path="calendar" element={<StudentCalendar />} />
         </Route>
 
         <Route path="/school" element={<AppShell role="school_admin" />}>

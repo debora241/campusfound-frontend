@@ -53,22 +53,6 @@ export const ADMISSIONS: Admission[] = [
   { id: "ADM-505", applicant: "Peter Ayuk", gradeApplied: "Form 1", stage: "rejected", submittedOn: "Jun 18, 2026" },
 ];
 
-export interface SchoolClass {
-  id: string;
-  name: string;
-  teacher: string;
-  students: number;
-  room: string;
-}
-
-export const CLASSES: SchoolClass[] = [
-  { id: "CLS-1", name: "Form 5A", teacher: "Mrs. Linda Achu", students: 32, room: "Block A · Rm 12" },
-  { id: "CLS-2", name: "Form 4A", teacher: "Mr. Jean Fotso", students: 29, room: "Block A · Rm 14" },
-  { id: "CLS-3", name: "Form 3B", teacher: "Ms. Brenda Njoya", students: 34, room: "Block B · Rm 3" },
-  { id: "CLS-4", name: "Form 2B", teacher: "Mr. Paul Ngu", students: 31, room: "Block B · Rm 5" },
-  { id: "CLS-5", name: "Form 1C", teacher: "Mr. Samuel Eto", students: 28, room: "Block C · Rm 1" },
-];
-
 export interface FeeRecord {
   id: string;
   student: string;
