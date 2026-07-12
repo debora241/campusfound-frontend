@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { GraduationCap } from "lucide-react";
 import { useAppDispatch } from "@/store/hooks";
-import { setTokens, setBackendUser, setRole } from "@/store/authSlice";
-import { authApi } from "@/lib/authApi";
-import { tokenStorage } from "@/lib/tokenStorage";
-import { ROLE_DASHBOARD_PATH, type Role } from "@/config/navigation";
+import { restoreSession } from "@/lib/sessionRestore";
+import { ROLE_DASHBOARD_PATH } from "@/config/navigation";
 
 export function SplashScreen() {
   const navigate = useNavigate();
@@ -15,41 +13,11 @@ export function SplashScreen() {
   useEffect(() => {
     let cancelled = false;
 
-    async function restoreSession() {
-      const refreshToken = tokenStorage.getRefreshToken();
-      let accessToken = tokenStorage.getAccessToken();
-      if (!refreshToken || !accessToken) return false;
-
-      try {
-        const user = await authApi.me(accessToken);
-        if (cancelled) return true;
-        dispatch(setTokens({ accessToken, refreshToken }));
-        dispatch(setBackendUser(user));
-        dispatch(setRole(user.dashboardRole as Role));
-        navigate(ROLE_DASHBOARD_PATH[user.dashboardRole as Role]);
-        return true;
-      } catch {
-        // Access token likely expired — try refreshing once before giving up.
-        try {
-          const refreshed = await authApi.refresh(refreshToken);
-          accessToken = refreshed.accessToken;
-          const user = await authApi.me(accessToken);
-          if (cancelled) return true;
-          tokenStorage.save(accessToken, refreshToken);
-          dispatch(setTokens({ accessToken, refreshToken }));
-          dispatch(setBackendUser(user));
-          dispatch(setRole(user.dashboardRole as Role));
-          navigate(ROLE_DASHBOARD_PATH[user.dashboardRole as Role]);
-          return true;
-        } catch {
-          tokenStorage.clear();
-          return false;
-        }
-      }
-    }
-
-    restoreSession().then((restored) => {
-      if (!restored && !cancelled) {
+    restoreSession(dispatch).then((role) => {
+      if (cancelled) return;
+      if (role) {
+        navigate(ROLE_DASHBOARD_PATH[role]);
+      } else {
         setTimeout(() => !cancelled && navigate("/onboarding"), 1600);
       }
     });

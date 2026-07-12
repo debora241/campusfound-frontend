@@ -18,6 +18,7 @@ const ORDER: AuthRole[] = [
   "government",
   "health_partner",
   "alumni",
+  "super_admin",
 ];
 
 export function RoleSelect() {

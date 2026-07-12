@@ -1,4 +1,5 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, Outlet, useNavigate, Navigate } from "react-router-dom";
 import { ArrowLeft, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -7,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logout as logoutAction } from "@/store/authSlice";
 import { authApi } from "@/lib/authApi";
 import { tokenStorage } from "@/lib/tokenStorage";
+import { restoreSession } from "@/lib/sessionRestore";
 
 const TABS = [
   { label: "Security", path: "/account/security" },
@@ -18,6 +20,22 @@ export function AccountShell() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const refreshToken = useAppSelector((s) => s.auth.refreshToken);
+  const accessToken = useAppSelector((s) => s.auth.accessToken);
+  const [checking, setChecking] = useState(!accessToken);
+
+  useEffect(() => {
+    if (accessToken) {
+      setChecking(false);
+      return;
+    }
+    let cancelled = false;
+    restoreSession(dispatch).then(() => {
+      if (!cancelled) setChecking(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [accessToken, dispatch]);
 
   const handleLogout = async () => {
     try {
@@ -30,6 +48,18 @@ export function AccountShell() {
     toast.success("Signed out");
     navigate("/welcome");
   };
+
+  if (checking) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-paper text-sm text-ink-300 dark:bg-paper-dark">
+        Loading…
+      </div>
+    );
+  }
+
+  if (!accessToken) {
+    return <Navigate to="/onboarding" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-paper dark:bg-paper-dark">

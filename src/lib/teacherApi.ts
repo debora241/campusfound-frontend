@@ -41,6 +41,15 @@ export interface AttendanceForClass {
   students: { studentId: string; studentName: string; status: "present" | "absent" | "late" | null }[];
 }
 
+export interface TimetableEntry {
+  id: string;
+  day: "Mon" | "Tue" | "Wed" | "Thu" | "Fri";
+  startTime: string;
+  endTime: string;
+  className: string;
+  room: string | null;
+}
+
 export const teacherApi = {
   getDashboard: (token: string) => apiClient.get<TeacherDashboard>("/teacher/me/dashboard", token),
   getClasses: (token: string) => apiClient.get<TeacherClass[]>("/teacher/me/classes", token),
@@ -64,4 +73,8 @@ export const teacherApi = {
     token: string,
     payload: { classRoomId: string; date: string; entries: { studentId: string; status: "present" | "absent" | "late" }[] }
   ) => apiClient.post("/teacher/me/attendance", payload, token),
+
+  getTimetable: (token: string) => apiClient.get<TimetableEntry[]>("/teacher/me/timetable", token),
+  createTimetableEntry: (token: string, payload: { classRoomId: string; day: string; startTime: string; endTime: string }) =>
+    apiClient.post<TimetableEntry>("/teacher/me/timetable", payload, token),
 };

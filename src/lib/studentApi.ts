@@ -66,6 +66,21 @@ export interface StudentFeeRecord {
   payments: StudentPayment[];
 }
 
+export interface StudentLibraryBook {
+  id: string;
+  title: string;
+  author: string;
+  category: string | null;
+  status: "available" | "borrowed_by_me" | "unavailable";
+  dueDate: string | null;
+}
+
+export interface StudentTransport {
+  routeName: string;
+  driverName: string | null;
+  status: "on_time" | "delayed";
+}
+
 export const studentApi = {
   getDashboard: (token: string) => apiClient.get<StudentDashboard>("/student/me/dashboard", token),
   getCourses: (token: string) => apiClient.get<StudentCourse[]>("/student/me/courses", token),
@@ -74,4 +89,6 @@ export const studentApi = {
   getCalendar: (token: string) => apiClient.get<StudentCalendarEvent[]>("/student/me/calendar", token),
   getCredentials: (token: string) => apiClient.get<StudentCredential[]>("/student/me/credentials", token),
   getWallet: (token: string) => apiClient.get<StudentFeeRecord[]>("/student/me/wallet", token),
+  getLibrary: (token: string) => apiClient.get<StudentLibraryBook[]>("/student/me/library", token),
+  getTransport: (token: string) => apiClient.get<StudentTransport | null>("/student/me/transport", token),
 };

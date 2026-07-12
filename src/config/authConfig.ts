@@ -211,4 +211,16 @@ export const AUTH_CONFIG: Record<AuthRole, RoleAuthConfig> = {
       },
     ],
   },
+  super_admin: {
+    options: [
+      {
+        id: "admin",
+        label: "Platform administrator login",
+        fields: [
+          { name: "email", label: "Administrator email", type: "email" },
+          { name: "password", label: "Password", type: "password" },
+        ],
+      },
+    ],
+  },
 };

@@ -15,7 +15,8 @@ export type AuthRole =
   | "police"
   | "government"
   | "health_partner"
-  | "alumni";
+  | "alumni"
+  | "super_admin";
 
 export const AUTH_ROLE_TO_DASHBOARD_ROLE: Record<AuthRole, Role> = {
   nursery: "student",
@@ -30,6 +31,7 @@ export const AUTH_ROLE_TO_DASHBOARD_ROLE: Record<AuthRole, Role> = {
   government: "government",
   health_partner: "health_partner",
   alumni: "alumni",
+  super_admin: "super_admin",
 };
 
 export interface AuthRoleMeta {
@@ -51,4 +53,5 @@ export const AUTH_ROLE_META: Record<AuthRole, AuthRoleMeta> = {
   government: { label: "Government", emoji: "🏛", description: "MINEDUB · MINESEC · MINESUP" },
   health_partner: { label: "Health Partner", emoji: "❤️", description: "" },
   alumni: { label: "Alumni", emoji: "🎓", description: "" },
+  super_admin: { label: "Super Administrator", emoji: "🛡️", description: "Platform-wide administration" },
 };

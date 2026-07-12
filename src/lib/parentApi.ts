@@ -64,6 +64,12 @@ export const parentApi = {
 
   listAlerts: (token: string) => apiClient.get<BackendAlert[]>("/parent/alerts", token),
 
+  getTransport: (token: string, studentId: string) =>
+    apiClient.get<{ routeName: string; driverName: string | null; status: "on_time" | "delayed" } | null>(
+      `/parent/children/${studentId}/transport`,
+      token
+    ),
+
   getAttendance: (token: string, studentId: string) =>
     apiClient.get<BackendAttendanceRecord[]>(`/parent/children/${studentId}/attendance`, token),
 

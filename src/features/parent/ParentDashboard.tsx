@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAppSelector } from "@/store/hooks";
 import { parentApi } from "@/lib/parentApi";
-import { MESSAGES } from "./data";
+import { messagesApi } from "@/lib/messagesApi";
 
 const fmt = (n: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "XAF", maximumFractionDigits: 0 }).format(n);
 
@@ -19,6 +19,12 @@ export function ParentDashboard() {
   });
 
   const totalDue = (children ?? []).reduce((s, c) => s + Math.max(c.feesDue - c.feesPaid, 0), 0);
+
+  const { data: conversations } = useQuery({
+    queryKey: ["conversations"],
+    queryFn: () => messagesApi.listConversations(accessToken!),
+    enabled: !!accessToken,
+  });
 
   return (
     <div className="space-y-6">
@@ -89,13 +95,14 @@ export function ParentDashboard() {
             <CardTitle>Recent messages</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {MESSAGES.slice(0, 2).map((m) => (
-              <div key={m.id} className="flex items-start justify-between gap-3 rounded-md border border-line p-3 text-sm dark:border-line-dark">
+            {(conversations ?? []).length === 0 && <p className="text-sm text-ink-300">No messages yet.</p>}
+            {(conversations ?? []).slice(0, 2).map((c) => (
+              <div key={c.userId} className="flex items-start justify-between gap-3 rounded-md border border-line p-3 text-sm dark:border-line-dark">
                 <div>
-                  <p className="font-medium">{m.from}</p>
-                  <p className="mt-0.5 text-xs text-ink-300">{m.preview}</p>
+                  <p className="font-medium">{c.fullName}</p>
+                  <p className="mt-0.5 text-xs text-ink-300">{c.preview}</p>
                 </div>
-                {m.unread && <Badge variant="gold">new</Badge>}
+                {c.unread && <Badge variant="gold">new</Badge>}
               </div>
             ))}
           </CardContent>
